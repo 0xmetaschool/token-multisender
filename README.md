@@ -40,10 +40,14 @@ Built with React.js and styled with Tailwind CSS, this applicationn allow user t
 
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/71e3860e-030e-42e5-b5f6-46f43f2219cb" alt="Screenshot 1" width="350"></td>
-    <td><img src="https://github.com/user-attachments/assets/4a18f298-1593-4a7b-bc44-54afc921be86" alt="Screenshot 2" width="350"></td>
-    <td><img src="https://github.com/user-attachments/assets/78ba4528-548f-4293-b6ee-84f2fc9786ed" alt="Screenshot 3" width="350"></td>
-    <td><img src="https://github.com/user-attachments/assets/9d491640-5205-4047-a3ae-808447f98408" alt="Screenshot 4" width="350"></td>
+    <td><img src="https://github.com/user-attachments/assets/1452732c-7575-4b85-9aaa-78d82f40f4dc" alt="Screenshot 1" width="350"></td>
+    <td><img src="https://github.com/user-attachments/assets/6f5280ed-d220-41c9-a748-d129bd288ebd6" alt="Screenshot 2" width="350"></td>
+    <td><img src="https://github.com/user-attachments/assets/4166d644-1ee2-4963-be0c-faf7646da38a" alt="Screenshot 3" width="350"></td>
+    <td><img src="https://github.com/user-attachments/assets/caf8b05e-539f-459e-a430-18259cd6c4ae" alt="Screenshot 4" width="350"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/629d9422-4835-4ab3-83ae-1be8f50acbb2" alt="Screenshot 1" width="350"></td>
+    <td><img src="https://github.com/user-attachments/assets/5e6ce367-b346-47a0-b940-627059d7503f" alt="Screenshot 2" width="350"></td>
   </tr>
 </table>
 

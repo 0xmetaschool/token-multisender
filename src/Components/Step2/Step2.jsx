@@ -21,7 +21,7 @@ let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
     {
       setIsLoading(true);
       let contract = sharedState.contract;
-      console.log("contract address=",contract.address);
+      //console.log("contract address=",contract.address);
 
       if (sharedState.selectedToken != "ETH") 
       {

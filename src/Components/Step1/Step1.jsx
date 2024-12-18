@@ -304,7 +304,7 @@ const Step1 = ({ sharedState, updateSharedState, onNext }) => {
       >
         <option value="0x41c108bba45ffc0ceee17a1dabaddd738bd3ab43">Ethereum Sepolia Testnet</option>
         {/* <option value="0xC09605fe77FfF000979a246b12c6fCaad0E7E722">Polygon Amoy Testnet</option> */}
-        <option value="0xA899118f4BCCb62F8c6A37887a4F450D8a4E92E0">Ethereum Mainnet</option>
+        {/* <option value="0xA899118f4BCCb62F8c6A37887a4F450D8a4E92E0">Ethereum Mainnet</option>*/}
 </select>
 
       <h3 className="text-left">Select Token</h3>

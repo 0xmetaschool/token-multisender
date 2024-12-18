@@ -7,6 +7,7 @@ const tokenContracts = {
   USDC: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
   WETH: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
   DAI: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+  META: "0xd312f1C56bfe9be58a36C4747a945FC699a9C079"
 };
 
 let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
@@ -20,11 +21,12 @@ let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
     {
       setIsLoading(true);
       let contract = sharedState.contract;
-      // console.log("contract address=",contract.address);
+      console.log("contract address=",contract.address);
 
       if (sharedState.selectedToken != "ETH") 
       {
         let tokenAddress = sharedState.selectedToken === "CUSTOM" ? sharedState.customTokenAddress : tokenContracts[sharedState.selectedToken];
+        console.log("tokenAddress=",sharedState.selectedToken);
         let tokenContract = new ethers.Contract(
           tokenAddress,
           [

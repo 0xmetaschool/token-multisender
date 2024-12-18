@@ -20,13 +20,7 @@ Built with React.js and styled with Tailwind CSS, this applicationn allow user t
 
 
 
-## Getting Started
-
-### Prerequisites
-- A supported wallet (e.g., MetaMask) connected to the Ethereum network.
-- Sufficient ETH balance for transaction fees.
-
-### How to Run the Multisender
+### Installation Steps
 1. Clone the repository:
     ```bash
     git clone https://github.com/0xmetaschool/token-multisender.git

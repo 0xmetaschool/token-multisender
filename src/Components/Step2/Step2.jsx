@@ -26,7 +26,7 @@ let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
       if (sharedState.selectedToken != "ETH") 
       {
         let tokenAddress = sharedState.selectedToken === "CUSTOM" ? sharedState.customTokenAddress : tokenContracts[sharedState.selectedToken];
-        console.log("tokenAddress=",sharedState.selectedToken);
+        //console.log("tokenAddress=",sharedState.selectedToken);
         let tokenContract = new ethers.Contract(
           tokenAddress,
           [

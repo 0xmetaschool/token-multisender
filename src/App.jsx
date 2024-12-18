@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Step1 from "./Components/Step1/Step1";
 import Step2 from "./Components/Step2/Step2";
 import Step3 from "./Components/Step3/Step3";
-// import Footer from "./Components/Footer";
-import "./App.css";
+import Footer from "./Components/Footer";
+import Navbar from './Components/Navbar';
+import LandingPage from './Components/LandingPage';
 import { ethers } from "ethers";
 
-const App = () => {
+const MultiSenderApp = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [sharedState, setSharedState] = useState({
     walletAddress: "",
@@ -30,7 +32,7 @@ const App = () => {
     approved_i:false,
   });
 
-  const [fucet_txn_hash, set_faucet_txn_hash] = useState(null);
+  const [set_faucet_txn_hash] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isFaucetModalOpen, setFaucetModalOpen] = useState(false);
 
@@ -164,82 +166,104 @@ let balance_func =async()=>
 
 
   return (
-    <>
-    <div className="step-container">
-      <h1>Welcome to Metaschool Token MultiSender </h1>
-      
-      <div className="steps">
-        <div className={`step ${currentStep === 1 ? 'active' : ''}`}>
-          <span className="step-number">1</span> Prepare
-        </div>
-        <div className={`step ${currentStep === 2 ? 'active' : ''}`}>
-          <span className="step-number">2</span> {sharedState.selectedToken === "ETH" ? "Confirm" : "Approve"}
-        </div>
-        <div className={`step ${currentStep === 3 ? 'active' : ''}`}>
-          <span className="step-number">3</span> Send
-        </div>
-      </div>
-      <div className="step-content">
-        {currentStep === 1 && (
-          <Step1 
-            sharedState={sharedState} 
-            updateSharedState={updateSharedState} 
-            onNext={handleNext}
-          />
-        )}
-        {currentStep === 2 && (
-          <Step2 
-            sharedState={sharedState} 
-            updateSharedState={updateSharedState} 
-            onNext={handleNext} 
-            onBack={handleBack}
-          />
-        )}
-        {currentStep === 3 && (
-          <Step3 
-            sharedState={sharedState} 
-            updateSharedState={updateSharedState}
-            onBack={handleBack}
-          />
-        )}
-      </div>
-      
-    </div>
+    <div className="min-h-screen flex flex-col bg-black text-gray-100 font-['Source_Sans_Pro']">
+      <Navbar 
+        onFaucetClick={handleFaucetClick}
+        showFaucet={sharedState.walletAddress && currentStep === 1}
+      />
+      <main className="flex-grow flex flex-col items-center justify-start">
+        <div className="w-full max-w-4xl mx-auto px-4">
+          <div className="flex justify-center mb-8 gap-16">
+            {[1, 2, 3].map((step) => (
+              <div
+                key={step}
+                className={`flex items-center ${
+                  currentStep === step ? "text-yellow-400" : "text-gray-400"
+                } font-bold text-lg animate-bounceIn`}
+              >
+                <div
+                  className={`${
+                    currentStep === step
+                      ? "bg-yellow-400 text-gray-800"
+                      : "bg-gray-700 text-gray-200"
+                  } w-[35px] h-[35px] rounded-full flex items-center justify-center mr-3 text-base font-bold animate-scaleUp`}
+                >
+                  {step}
+                </div>
+                Step {step}
+              </div>
+            ))}
+          </div>
 
-
-    <div className="faucet-container" onClick={handleFaucetClick}>
-        <button>Faucet</button>
-      </div>
-
-      {isFaucetModalOpen && (
-        <>
-          <div className="overlay" onClick={closeFaucetModal}></div>
-          <div className="modal">
-            <div className="modal-content">
-              <h2>MetaToken Faucet</h2>
-              <p>Fast and reliable. 10 Meta / 24 hrs.</p>
-              
-              <h1></h1>
-              
-              
-              <p>Your current balance: {sharedState.token_balance} META</p>
-              <div className="space"></div>
-              {isLoading ? <p>Processing transaction...</p> : null}
-              <button onClick={mintMetaToken}>Mint 10 META</button>
-              <button onClick={closeFaucetModal}>Close</button>
-              <div className="space"></div>
-              <p>
-                <b>Note :</b>The faucet is currently available only on the Sepolia Testnet.
-              </p>
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-gray-800/80 backdrop-blur-sm border-2 border-yellow-400 p-8 rounded-xl shadow-xl animate-slideUp">
+              {currentStep === 1 && (
+                <Step1
+                  sharedState={sharedState}
+                  updateSharedState={updateSharedState}
+                  onNext={handleNext}
+                />
+              )}
+              {currentStep === 2 && (
+                <Step2
+                  sharedState={sharedState}
+                  updateSharedState={updateSharedState}
+                  onNext={handleNext}
+                  onBack={handleBack}
+                />
+              )}
+              {currentStep === 3 && (
+                <Step3
+                  sharedState={sharedState}
+                  updateSharedState={updateSharedState}
+                  onBack={handleBack}
+                />
+              )}
             </div>
           </div>
-        </>
-      )}
+        </div>
 
+        {isFaucetModalOpen && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-gray-800 p-8 rounded-xl border border-yellow-400/30 max-w-md w-full mx-4 shadow-2xl">
+              <h2 className="text-2xl font-bold mb-4 text-yellow-400">META Token Faucet</h2>
+              <p className="mb-6 text-gray-300">
+                Click the button below to receive META tokens for testing.
+              </p>
+              <div className="flex justify-end space-x-4">
+                <button
+                  onClick={closeFaucetModal}
+                  className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={mintMetaToken}
+                  disabled={isLoading}
+                  className="px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 disabled:bg-gray-400 transition-all duration-300 shadow-lg hover:shadow-yellow-400/30"
+                >
+                  {isLoading ? "Minting..." : "Get Tokens"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
 
-    {/* <Footer></Footer> */}
-    </>
-   
+      <Footer />
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/app" element={<MultiSenderApp />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
 };
 

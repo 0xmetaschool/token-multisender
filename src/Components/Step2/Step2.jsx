@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 import { ethers } from "ethers";
-import './Step2.css';
 
-let tokenContracts = {
+const tokenContracts = {
   USDT: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
   USDC: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
   WETH: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
   DAI: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
 };
-
-// let CONTRACT_ADDRESS = "0x40BFA789014FCC59922585D08DB3C64F9eb7e445";
 
 let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
   let [totalAmount, setTotalAmount] = useState("0");
@@ -161,35 +159,56 @@ let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
     return ethers.utils.formatUnits(amount, decimals);
   };
 
-
+  useEffect(() => {
+    if (sharedState.selectedToken === "ETH") {
+      updateSharedState({ approved_i: true });
+    } else {
+      updateSharedState({ approved_i: false });
+    }
+  }, [sharedState.selectedToken]);
 
   useEffect(() => {
-    // console.log("Approved_i:", sharedState.approved_i);
-  }, [sharedState.approved_i]);
-
-
+    let Total_ = sharedState.amounts.reduce((acc, amount) => acc + parseFloat(ethers.utils.formatUnits(amount, 18)), 0);
+    
+    let Balance_ = 0;
+    if(sharedState.selectedToken === "CUSTOM") {
+      Balance_ = parseFloat(sharedState.custom_token_balance);
+    } else if(sharedState.selectedToken === "ETH") {
+      Balance_ = parseFloat(sharedState.ethBalance);
+    } else {
+      Balance_ = parseFloat(sharedState.token_balance);
+    }
+    
+    let totalValue = parseFloat(Total_);
+    setSufficientBalance(Balance_ >= totalValue);
+  }, [
+    sharedState.amounts,
+    sharedState.ethBalance,
+    sharedState.token_balance,
+    sharedState.custom_token_balance,
+    sharedState.selectedToken
+  ]);
 
   return (
-    <div className="step2-container">
-      <div className="table-container">
-        <h3 className="subheading">List of Recipients</h3>
-        <table className="recipients-table">
+    <div className="w-full">
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse mb-5 border-2 border-gray-700 rounded-lg overflow-hidden animate-fadeIn">
           <thead>
             <tr>
-              <th>Recipient Address</th>
-              <th>Amount ({sharedState.selectedToken === "CUSTOM" ? sharedState.custom_token_symbol : sharedState.selectedToken})</th>
-              <th>Action</th>
+              <th className="bg-gray-700 text-gray-100 p-2.5 text-left text-base border border-gray-600">Recipient Address</th>
+              <th className="bg-gray-700 text-gray-100 p-2.5 text-left text-base border border-gray-600">Amount ({sharedState.selectedToken === "CUSTOM" ? sharedState.custom_token_symbol : sharedState.selectedToken})</th>
+              <th className="bg-gray-700 text-gray-100 p-2.5 text-left text-base border border-gray-600">Action</th>
             </tr>
           </thead>
           <tbody>
             {sharedState.addresses.map((recipient, index) => (
-              <tr key={index} className="table-row">
-                <td>{recipient.slice(0, 6)}.....{recipient.slice(-6)}</td>
-                <td>{formatDisplayAmount(sharedState.amounts[index])}</td>
-                <td>
+              <tr key={index} className="hover:bg-gray-600 transition-colors duration-200 animate-fadeInRow even:bg-gray-800">
+                <td className="border border-gray-600 p-2.5 text-left text-base">{recipient.slice(0, 6)}.....{recipient.slice(-6)}</td>
+                <td className="border border-gray-600 p-2.5 text-left text-base">{formatDisplayAmount(sharedState.amounts[index])}</td>
+                <td className="border border-gray-600 p-2.5 text-left text-base">
                   <button
                     onClick={() => handleRemoveRecipient(index)}
-                    className="remove-btn"
+                    className="bg-red-500 text-white px-3 py-1.5 rounded hover:bg-red-600 transition-all duration-300 transform hover:scale-110"
                   >
                     Remove
                   </button>
@@ -201,83 +220,68 @@ let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
       </div>
 
       {sharedState.selectedToken != "ETH" && 
-      <button className="send-button" onClick={approve_func} disabled={isLoading}>Approve</button>}
-      {isLoading && <p>Approving...</p>}
-      <div className="table-container">
-        <h3 className="subheading">Transaction Summary</h3>
-        <table className="summary-table">
-          <thead>
-            <tr>
-              <th>Details</th>
-              <th>Values</th>
-            </tr>
-          </thead>
+      <button className="bg-transparent text-white border border-yellow-400 py-2.5 px-5 text-base cursor-pointer rounded hover:bg-yellow-400 hover:text-black transition-all duration-300" onClick={approve_func} disabled={isLoading}>Approve</button>}
+      {isLoading && <p className="text-red-500 mt-5">Approving...</p>}
+      <div className="overflow-x-auto">
+        <h2 className="text-2xl font-bold text-gray-300 mt-5 mb-4">Transaction Summary</h2>
+        <table className="w-full border-collapse mb-5 border-2 border-gray-700 rounded-lg overflow-hidden animate-fadeIn">
           <tbody>
-            <tr>
-              <td>Total number of addresses:</td>
-              <td>{sharedState.addresses.length}</td>
+            <tr className="hover:bg-gray-600 transition-colors duration-200">
+              <td className="border border-gray-600 p-2.5 text-left text-base">Total number of addresses:</td>
+              <td className="border border-gray-600 p-2.5 text-left text-base">{sharedState.addresses.length}</td>
             </tr>
-            <tr>
-              <td>Total number of tokens to be sent:</td>
-              <td>{totalAmount} {sharedState.selectedToken === "CUSTOM" ? sharedState.custom_token_symbol : sharedState.selectedToken}</td>
+            <tr className="hover:bg-gray-600 transition-colors duration-200 bg-gray-800">
+              <td className="border border-gray-600 p-2.5 text-left text-base">Total number of tokens to be sent:</td>
+              <td className="border border-gray-600 p-2.5 text-left text-base">{totalAmount} {sharedState.selectedToken === "CUSTOM" ? sharedState.custom_token_symbol : sharedState.selectedToken}</td>
             </tr>
-            <tr>
-              <td>Total number of transactions needed:</td>
-              <td>1</td>
+            <tr className="hover:bg-gray-600 transition-colors duration-200">
+              <td className="border border-gray-600 p-2.5 text-left text-base">Total number of transactions needed:</td>
+              <td className="border border-gray-600 p-2.5 text-left text-base">1</td>
             </tr>
-            <tr>
-              <td>Your token balance:</td>
-              <td>
+            <tr className="hover:bg-gray-600 transition-colors duration-200 bg-gray-800">
+              <td className="border border-gray-600 p-2.5 text-left text-base">Your token balance:</td>
+              <td className="border border-gray-600 p-2.5 text-left text-base">
                 {sharedState.selectedToken === "ETH" && `${sharedState.ethBalance} `}
                 {sharedState.selectedToken !== "ETH" && sharedState.selectedToken !== "CUSTOM" && `${sharedState.token_balance} ${sharedState.selectedToken}`}
                 {sharedState.selectedToken === "CUSTOM" && `${sharedState.custom_token_balance} ${sharedState.custom_token_symbol}`}
               </td>
             </tr>
-            <tr>
-              <td>Approximate cost of operation:</td>
-              <td>{sharedState.estimatedGas} Wei</td>
+            <tr className="hover:bg-gray-600 transition-colors duration-200">
+              <td className="border border-gray-600 p-2.5 text-left text-base">Approximate cost of operation:</td>
+              <td className="border border-gray-600 p-2.5 text-left text-base">{sharedState.estimatedGas} Wei</td>
             </tr>
           </tbody>
         </table>
 
-        <div className="buttons-container">
-          <button onClick={onBack}>Back</button>
-          <button onClick={onNext} disabled={!(sharedState.approved_i  &&  sufficientBalance)}>
+        <div className="flex justify-between gap-4">
+          <button
+            onClick={onBack}
+            className="flex-1 bg-transparent text-white border border-yellow-400 py-2.5 px-5 text-base cursor-pointer rounded hover:bg-yellow-400 hover:text-black transition-all duration-300"
+          >
+            Back
+          </button>
+          <button
+            onClick={onNext}
+            disabled={!(sharedState.approved_i  &&  sufficientBalance)}
+            className="flex-1 bg-transparent text-white border border-yellow-400 py-2.5 px-5 text-base cursor-pointer rounded hover:bg-yellow-400 hover:text-black transition-all duration-300 disabled:bg-gray-600 disabled:border-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+          >
             Next: Send
           </button>
         </div>
         
         {!sufficientBalance && (
-          <div className="insufficient-balance-warning">
-            Insufficient balance. Please check your token balance.
-          </div>
+          <div className="text-red-500 mt-5">Insufficient balance. Please check your token balance.</div>
         )}
       </div>
     </div>
   );
 };
 
+Step2.propTypes = {
+  sharedState: PropTypes.object.isRequired,
+  updateSharedState: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired,
+  onBack: PropTypes.func.isRequired
+};
+
 export default Step2;
-
-
-
-// let tx1 = await tokenContract.populateTransaction.approve(CONTRACT_ADDRESS, 0);
-// let tx2 = await tokenContract.populateTransaction.approve(CONTRACT_ADDRESS, totalAmount);
-
-
-//         let batch = [
-//           { to: tokenContract.address, data: tx1.data },
-//           { to: tokenContract.address, data: tx2.data },
-//           // { to: contract.address, data: tx3.data }
-//         ];
-
-//         let txResponse = await provider.sendBatch(batch);
-//         let receipts = await Promise.all(txResponse.map(tx => tx.wait()));
-// let totalGasUsed = ethers.BigNumber.from(0);
-// receipts.forEach(receipt => {
-//   totalGasUsed = totalGasUsed.add(receipt.gasUsed);
-// });
-
-// // console.log(totalGasUsed.toString(), `Total Gas Used for All Transactions: ${ethers.utils.formatUnits(totalGasUsed, 'gwei')} Gwei`);
-
-

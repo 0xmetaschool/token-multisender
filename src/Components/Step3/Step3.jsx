@@ -120,8 +120,11 @@ let Step3 = ({ sharedState, updateSharedState, onBack }) =>
           { value: totalAmount }
         );
       } else {
+        // console.log("sharedState.tokenAddress",sharedState.tokenAddress);
+        let tokenAddress = sharedState.selectedToken === "CUSTOM" ? sharedState.customTokenAddress : tokenContracts[sharedState.selectedToken]
+        // console.log("tokenAddress",tokenAddress);
         tx = await sharedState.contract.batchSendERC20(
-          sharedState.tokenAddress,
+          tokenAddress,
           sharedState.addresses,
           sharedState.amounts
         );

@@ -24,7 +24,7 @@ https://token-multisender-five.vercel.app/app
 
 
 
-### Installation Steps
+## Installation Steps
 1. Clone the repository:
     ```bash
     git clone https://github.com/0xmetaschool/token-multisender.git
@@ -57,34 +57,9 @@ https://token-multisender-five.vercel.app/app
 
 ## How to use Mulisender
 
-### **Step 1: Prepare**
-1. Connect your wallet and select the **Ethereum Mainnet**.
-2. Wait for token balances to load. If tokens fail to load:
-   - Manually insert the token address to add them.
-3. Select the token you want to send.
-4. Upload an **Excel**, **CSV**, or **Txt** file with addresses and amounts or manually insert them separated by commas.
-5. Click **Next** to proceed.
-
-
-
-### **Step 2: Confirm**
-1. Review the list of recipients:
-   - Addresses and corresponding amounts are displayed.
-   - Option to **Remove** any recipient from the list.
-2. Review the transaction summary:
-   - **Total Addresses**: Number of recipients.
-   - **Total Tokens to Send**: Amount of tokens.
-   - **Total Transactions**: Number of batches needed.
-   - **Your Balance**: Current wallet token balance.
-   - **Estimated Operation Cost**: Gas fees in Wei.
-3. Click **Back** to make changes or **Next** to proceed.
-
-
-### **Step 3: Send**
-1. Confirm the batch transaction details.
-2. View your transaction details on **Etherscan** after sending.
-3. Option to **Download Receipt** for record-keeping.
-4. Wait for the transaction to complete and check the receipt for confirmation.
+1. **Prepare:** Connect wallet, select Ethereum Mainnet, add tokens, upload recipient file or input manually, and click Next.
+2. **Confirm:** Review recipients, transaction summary, and click Next.
+4. **Send:** Confirm details, send, view on Etherscan, and download the receipt.
 
 
 
@@ -99,6 +74,9 @@ We welcome contributions to enhance the functionality and user experience of Met
 4. Push the changes to your fork (`git push origin feature_name`).
 5. Open a pull request to the main repository.
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/0xmetaschool/EmailGeneratorGPT/blob/main/LICENSE) file for details.
 
 
 ## Contact

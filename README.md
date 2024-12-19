@@ -16,12 +16,18 @@ https://token-multisender-five.vercel.app/app
 - **User-friendly Interface:** Intuitive steps to guide users through the process.
 
 
-## Tech-Stack
+## Technologies Used
 - **Frontend:** React.js
 - **Backend:** Node.js
 - **Blockchain:** Ethereum, Solidity
 - **Utilities:** Web3.js, Ethers.js
 
+## Use Cases
+- Token airdrops to multiple recipients
+- Employee token payments
+- Investor distributions
+- Community rewards distribution
+- Batch transfers for projects
 
 
 ## Installation Steps

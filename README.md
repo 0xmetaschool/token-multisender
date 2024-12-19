@@ -65,7 +65,7 @@ https://token-multisender-five.vercel.app/app
 
 ## Contributing
 
-We welcome contributions to enhance the functionality and user experience of MetaSchool Token MultiSender. 
+Contributions are welcome! Here's how you can help: 
 
 ### Steps to Contribute:
 1. Fork the repository.

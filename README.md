@@ -45,6 +45,7 @@ https://token-multisender-five.vercel.app/app
     ```bash
     npm run dev
     ```
+Open your browser and navigate to http://localhost:5173
 
 ## Screenshots
 

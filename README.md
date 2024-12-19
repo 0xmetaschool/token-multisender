@@ -73,7 +73,6 @@ https://token-multisender-five.vercel.app/app
 
 Contributions are welcome! Here's how you can help: 
 
-## Steps to Contribute:
 1. Fork the repository.
 2. Create a new branch for your feature (`git checkout -b feature_name`).
 3. Commit your changes (`git commit -m "Add feature_name"`).

@@ -59,7 +59,6 @@ let balance_func =async()=>
   ], sharedState.signer);
 
   let balance = await contract.balanceOf(sharedState.walletAddress);// Update the MetaToken balance after minting
-  // console.log("balance=",balance.toString());
   setSharedState((prevState) => ({...prevState,token_balance: ethers.utils.formatUnits(balance, 18)}));
 }
 
@@ -68,7 +67,6 @@ let balance_func =async()=>
     try 
     {
         setIsLoading(true);
-      // if (sharedState.contractAddress) {
         const contract = new ethers.Contract("0xd312f1C56bfe9be58a36C4747a945FC699a9C079" , [
           "function faucet() external",
         ], sharedState.signer);

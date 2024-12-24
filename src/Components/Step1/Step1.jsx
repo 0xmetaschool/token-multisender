@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import PropTypes from 'prop-types';
 import { ethers } from "ethers";
 
-// eslint-disable-next-line no-unused-vars
 const tokenContracts = 
 {
   USDT: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
@@ -20,7 +19,6 @@ const CONTRACT_ABI =
 
 const Step1 = ({ sharedState, updateSharedState, onNext }) => {
   const connectToMetaMask = async () => {
-    // console.log("connectToMetaMask calling");
     if (window.ethereum) 
     {
       try 
@@ -29,9 +27,6 @@ const Step1 = ({ sharedState, updateSharedState, onNext }) => {
         let provider = new ethers.providers.Web3Provider(window.ethereum);
         let signer = provider.getSigner();
         let network = await provider.getNetwork();
-        // console.log(network);
-        // console.log("Account: ", accounts[0]);
-        // console.log(sharedState.CONTRACT_ADDRESS);
         let contract = new ethers.Contract(sharedState.CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
         let balance = await signer.getBalance();
@@ -100,9 +95,7 @@ const Step1 = ({ sharedState, updateSharedState, onNext }) => {
       let symbol = await contract.symbol();
       let balance = await contract.balanceOf(sharedState.walletAddress);
       let decimals = await contract.decimals(); // Get the decimal value for the token
-      
 
-      // // console.log("balance=",balance);
       let formattedBalance = ethers.utils.formatUnits(balance, decimals);
       updateSharedState({ custom_token_balance: formattedBalance });
       updateSharedState({ custom_token_symbol: symbol });
@@ -121,7 +114,6 @@ const Step1 = ({ sharedState, updateSharedState, onNext }) => {
     {
       updateSharedState({approved_i:false});
     }
-    // console.log("handletokenchange calling");
     if(i != "CUSTOM" &&  i != "ETH"  )
     {
       try 
@@ -137,15 +129,7 @@ const Step1 = ({ sharedState, updateSharedState, onNext }) => {
         // Fetch token detail
         let balance = await contract.balanceOf(sharedState.walletAddress);
         let decimals = await contract.decimals(); // Get the decimal value for the token
-        
-        // console.log("name=",name);
-        // console.log("symbol=",symbol);
-        // console.log("balance=",balance.toString());
-        // console.log("decimals=",decimals);
-        // Format balance using the decimals value dynamically
         let formattedBalance = ethers.utils.formatUnits(balance, decimals);
-        
-        // Update shared state with the formatted balance
         updateSharedState({ token_balance: formattedBalance });
         
       } 
@@ -303,8 +287,6 @@ const Step1 = ({ sharedState, updateSharedState, onNext }) => {
   className="w-full py-2.5 px-2.5 text-sm my-2.5 border border-gray-300 rounded bg-gray-100 text-black transition-all duration-200 focus:border-yellow-400 focus:outline-none appearance-none cursor-pointer bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_10px_center] bg-[length:12px]"
       >
         <option value="0x41c108bba45ffc0ceee17a1dabaddd738bd3ab43">Ethereum Sepolia Testnet</option>
-        {/* <option value="0xC09605fe77FfF000979a246b12c6fCaad0E7E722">Polygon Amoy Testnet</option> */}
-        {/* <option value="0xA899118f4BCCb62F8c6A37887a4F450D8a4E92E0">Ethereum Mainnet</option>*/}
 </select>
 
       <h3 className="text-left">Select Token</h3>
@@ -319,12 +301,6 @@ const Step1 = ({ sharedState, updateSharedState, onNext }) => {
       >
        <option value="ETH">Sepolia ETH</option>
        <option value="META">Sepoila META</option>
-        {/* <option value="ETH">ETH</option>
-        <option value="USDT">USDT</option>
-        <option value="USDC">USDC</option>
-        <option value="WETH">WETH </option>
-        <option value="DAI">DAI </option> */}
-        
         <option value="CUSTOM">Custom Token</option>
       </select>
 

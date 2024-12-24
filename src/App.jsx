@@ -74,8 +74,6 @@ let balance_func =async()=>
         let tx =await contract.faucet( { gasLimit: 210000 }); // Call the faucet function
         await tx.wait(); // Wait for the transaction to be mined
         set_faucet_txn_hash(tx.hash);
-        console.log("Tokens minted successfully!");
-        console.log("Transaction hash:", tx.hash);
         setFaucetModalOpen(false); // Close the modal after minting
       
     } 
@@ -125,7 +123,6 @@ let balance_func =async()=>
             method: "wallet_switchEthereumChain",
             params: [{ chainId: "0xAA36A7" }], // Hexadecimal for 11155111
           });
-          console.log("Switched to Sepolia network");
         } catch (error) {
           // If the user doesn't have Sepolia, try adding it
           if (error.code === 4902) {
@@ -146,7 +143,6 @@ let balance_func =async()=>
                   },
                 ],
               });
-              console.log("Sepolia network added and switched to it.");
             } catch (addError) {
               console.error("Error adding Sepolia network:", addError);
             }

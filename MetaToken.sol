@@ -15,9 +15,6 @@ contract MetaToken is ERC20, Ownable {
         _mint(msg.sender, 1000 * (10 ** 18)); // Initial supply for the owner
     }
 
-    /**
-     * @dev Allows users to mint 10 tokens once every 24 hours.
-     */
     function faucet() external {
         require(block.timestamp >= lastMintTime[msg.sender] + MINT_INTERVAL, "Minting is allowed only once in 24 hours");
 
@@ -28,11 +25,6 @@ contract MetaToken is ERC20, Ownable {
         _mint(msg.sender, MINT_AMOUNT);
     }
 
-    /**
-     * @dev Checks when the user can mint again.
-     * @param account The address of the user.
-     * @return Remaining time in seconds until the user can mint again.
-     */
     function timeUntilNextMint(address account) external view returns (uint256) {
         if (block.timestamp >= lastMintTime[account] + MINT_INTERVAL) {
             return 0;
@@ -40,4 +32,3 @@ contract MetaToken is ERC20, Ownable {
         return (lastMintTime[account] + MINT_INTERVAL) - block.timestamp;
     }
 }
-//0xd312f1C56bfe9be58a36C4747a945FC699a9C079

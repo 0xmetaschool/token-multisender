@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Send, Shield, Zap, CheckCircle } from 'lucide-react';
 import Footer from './Footer';

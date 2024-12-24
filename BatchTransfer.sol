@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 interface IERC20 
 {
-    // function transfer(address recipient, uint256 amount) external returns (bool);
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
     function approve(address spender, uint256 amount) external returns (bool);
     function balanceOf(address account) external view returns (uint256);
@@ -67,23 +66,3 @@ contract BatchTransfer
 }
 // sepolia -  0x41c108bba45ffc0ceee17a1dabaddd738bd3ab43
 // Amoy   -  0xC09605fe77FfF000979a246b12c6fCaad0E7E722
-
-
-
-
-
-
-
-// We use a low-level call instead of direct function calls
-// abi.encodeWithSelector creates the function call data
-// This handles tokens like USDT that don't return values correctly
-// We check both the success status AND the returned data
-
-
-// Why USDT/USDC Fails with Direct Transfer:
-
-
-// USDT was created before the ERC20 standard was finalized
-// It doesn't return a boolean for transfer/transferFrom
-// When called directly in web3/ethers, the libraries handle this
-// But when called from a contract, the missing return value causes an error

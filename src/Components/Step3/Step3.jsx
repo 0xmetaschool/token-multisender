@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import { ethers } from "ethers";
-// eslint-disable-next-line no-unused-vars
 const tokenContracts = 
 {
 
@@ -120,9 +119,8 @@ let Step3 = ({ sharedState, updateSharedState, onBack }) =>
           { value: totalAmount }
         );
       } else {
-        // console.log("sharedState.tokenAddress",sharedState.tokenAddress);
         let tokenAddress = sharedState.selectedToken === "CUSTOM" ? sharedState.customTokenAddress : tokenContracts[sharedState.selectedToken]
-        // console.log("tokenAddress",tokenAddress);
+        
         tx = await sharedState.contract.batchSendERC20(
           tokenAddress,
           sharedState.addresses,

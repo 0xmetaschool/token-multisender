@@ -21,12 +21,9 @@ let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
     {
       setIsLoading(true);
       let contract = sharedState.contract;
-      //console.log("contract address=",contract.address);
-
       if (sharedState.selectedToken != "ETH") 
       {
         let tokenAddress = sharedState.selectedToken === "CUSTOM" ? sharedState.customTokenAddress : tokenContracts[sharedState.selectedToken];
-        //console.log("tokenAddress=",sharedState.selectedToken);
         let tokenContract = new ethers.Contract(
           tokenAddress,
           [
@@ -38,29 +35,23 @@ let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
           sharedState.signer
         );
         let decimals = await tokenContract.decimals();
-        // console.log("decimal=", decimals);
 
         // Adjust amounts to the correct decimals
         let adjustedAmounts = await Promise.all(sharedState.amounts.map(async (amount) => {return adjustAmountDecimals(amount, 18, decimals);}));
-        // console.log("Adjusted amounts:", adjustedAmounts.map(a => a.toString()));
 
         let totalAmount = adjustedAmounts.reduce((acc, amount) => acc.add(amount),ethers.BigNumber.from(0));
-        // console.log("Total Amount:", totalAmount.toString());
 
         let resetTx = await tokenContract.approve(sharedState.CONTRACT_ADDRESS, 0);
         await resetTx.wait();
-        // console.log("Previous approval cleared:", resetTx);
   
         let resetTx1 = await tokenContract.approve(sharedState.CONTRACT_ADDRESS, totalAmount);
         await resetTx1.wait();
-        // console.log("Previous approval cleared:", resetTx1);
         let estimatedGas = await contract.estimateGas.batchSendERC20(
           tokenAddress,
           sharedState.addresses,
           adjustedAmounts,
           { gasLimit: 210000 }
         );
-        // console.log("Estimated Gas:", estimatedGas.toString());
         updateSharedState({ estimatedGas: estimatedGas.toString() });
         setIsLoading(false);
         updateSharedState({approved_i: true});
@@ -115,18 +106,12 @@ let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
     try 
     {
       let contract = sharedState.contract;
-      // console.log("contract address=",contract.address);
       
       if (sharedState.selectedToken === "ETH") 
       {
-          
-          // console.log(sharedState.CONTRACT_ADDRESS);
           let totalValue = sharedState.amounts.reduce((acc, amount) => acc.add(amount),ethers.BigNumber.from(0));
-          // console.log("totalValue =", totalValue.toString());
           let estimatedGas = await contract.estimateGas.batchSendETH(sharedState.addresses,sharedState.amounts,{ value: totalValue},);
-          // console.log("estimatedGas =", estimatedGas);
           updateSharedState({ estimatedGas: estimatedGas.toString() });
-          
       }  
       
     } 
@@ -150,8 +135,6 @@ let Step2 = ({ sharedState, updateSharedState, onNext, onBack }) => {
 
   useEffect(() => {
     calculateGas();
-    // updateSharedState({approved_i:false});
-    // console.log("changed")
   }, [sharedState.addresses, sharedState.amounts, sharedState.selectedToken,sharedState.CONTRACT_ADDRESS]);
 
   let formatDisplayAmount = (amount) => {
